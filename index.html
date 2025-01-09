@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" touch-action="manipulation">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Connect Four | RSKWORLD Online Games</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Play Connect Four online - a strategic multiplayer game with AI and dual-player modes by RSKWORLD.">
+    <meta name="keywords" content="Connect Four, online game, multiplayer, AI game, RSKWORLD, free games">
+    <meta name="author" content="RSKWORLD">
+    
+    <!-- Mobile-specific Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rskworld.in/games/connect-four">
+    <meta property="og:title" content="Connect Four | RSKWORLD Online Games">
+    <meta property="og:description" content="Play Connect Four online - a strategic multiplayer game with AI and dual-player modes by RSKWORLD.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://rskworld.in/favicon.ico" type="image/x-icon">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+        }
+        .game-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        /* Music Toggle Animation */
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        #music-toggle {
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #music-toggle .bi {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        #music-toggle.music-on {
+            animation: musicPulse 1.5s infinite;
+            color: #2ecc71;
+            border-color: #2ecc71;
+        }
+        #music-toggle.music-off {
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+        #music-toggle.music-on .bi-music-note-beamed {
+            transform: rotate(360deg);
+        }
+        #music-toggle.music-off .bi-music-note-beamed {
+            transform: rotate(0deg);
+        }
+        /* Win Animation */
+        @keyframes winAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .win-piece {
+            animation: winAnimation 0.5s infinite;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .game-container {
+                padding: 15px !important;
+            }
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn-group > .btn {
+                margin: 5px 0;
+                width: 100%;
+            }
+            #grid {
+                transform: scale(0.9);
+            }
+            .display-5 {
+                font-size: 1.5rem;
+            }
+        }
+        /* Source Code and Attribution Styles */
+        .source-code-section {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .source-code-section a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .source-code-section a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .github-link .bi {
+            margin-right: 5px;
+        }
+        /* Sound Toggle Styles */
+        #background-music-toggle, #game-sounds-toggle {
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #background-music-toggle .bi, #game-sounds-toggle .bi {
+            font-size: 1rem;
+            margin-right: 5px;
+        }
+        #background-music-toggle.music-on, #game-sounds-toggle.sounds-on {
+            color: #2ecc71;
+            border-color: #2ecc71;
+            animation: musicPulse 1.5s infinite;
+        }
+        #background-music-toggle.music-off, #game-sounds-toggle.sounds-off {
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Audio Elements -->
+    <audio id="move-sound" preload="auto">
+        <source src="sounds/move.mp3" type="audio/mpeg">
+        <source src="sounds/move.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="win-sound" preload="auto">
+        <source src="sounds/win.mp3" type="audio/mpeg">
+        <source src="sounds/win.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="background-music" preload="auto" loop>
+        <source src="sounds/background.mp3" type="audio/mpeg">
+        <source src="sounds/background.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="container py-3">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="game-container p-4 text-center text-white">
+                    <!-- Music Control -->
+                    <div class="row mb-3">
+                        <div class="col text-end">
+                            <button id="music-toggle" class="btn btn-outline-light btn-sm music-off">
+                                <i id="music-icon" class="bi bi-music-note-beamed"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Top Navigation -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="btn-group w-100" role="group">
+                                <a href="https://rskworld.in/games" class="btn btn-outline-light" target="_blank">
+                                    <i class="bi bi-controller me-2"></i>More Games
+                                </a>
+                                <a href="mailto:help@rskworld.in" class="btn btn-outline-light" target="_blank">
+                                    <i class="bi bi-envelope me-2"></i>Contact Us
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Title -->
+                    <h1 class="display-5 mb-3">
+                        <i class="bi bi-dice-4 me-2"></i>Connect Four
+                        <small class="d-block text-muted fs-6">by RSKWORLD</small>
+                    </h1>
+
+                    <!-- Game Mode Selector -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="btn-group w-100" role="group">
+                                <button id="mode-single" class="btn btn-outline-light mode-btn">
+                                    <i class="bi bi-robot me-2"></i>Single Player
+                                </button>
+                                <button id="mode-dual" class="btn btn-outline-light mode-btn active">
+                                    <i class="bi bi-people me-2"></i>Dual Player
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Difficulty Selector -->
+                    <div id="difficulty-selector" class="row mb-3 d-none">
+                        <div class="col">
+                            <h4 class="mb-2">AI Difficulty</h4>
+                            <div class="btn-group w-100" role="group">
+                                <button id="difficulty-easy" class="btn btn-outline-success difficulty-btn">Easy</button>
+                                <button id="difficulty-medium" class="btn btn-outline-warning difficulty-btn active">Medium</button>
+                                <button id="difficulty-hard" class="btn btn-outline-danger difficulty-btn">Hard</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player Display -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div id="player" class="card bg-transparent border-light">
+                                <div class="card-header">
+                                    <h3 id="player-type" class="card-title">Player - 1</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Grid -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div id="grid" class="game-grid">
+                                <!-- Game Grid Buttons will be dynamically generated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Controls -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="btn-group w-100" role="group">
+                                <button id="reset-btn" class="btn btn-danger">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Reset Game
+                                </button>
+                                <button id="help-btn" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#helpModal">
+                                    <i class="bi bi-question-circle me-2"></i>How to Play
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Website Links -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="btn-group w-100" role="group">
+                                <a href="https://rskworld.in/games" class="btn btn-sm btn-outline-light" target="_blank">
+                                    <i class="bi bi-controller me-2"></i>More Games
+                                </a>
+                                <a href="https://rskworld.in" class="btn btn-sm btn-outline-light" target="_blank">
+                                    <i class="bi bi-globe me-2"></i>RSKWORLD Home
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Win Modal -->
+    <div class="modal fade" id="winModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">🎉 Congratulations! 🎉</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="win-icon" class="mb-3" style="font-size: 5rem;"></div>
+                    <h2 id="win-message" class="mb-3"></h2>
+                    <div class="btn-group" role="group">
+                        <button id="play-again-btn" class="btn btn-success">
+                            <i class="bi bi-play-fill me-2"></i>Play Again
+                        </button>
+                        <button id="share-btn" class="btn btn-primary">
+                            <i class="bi bi-share-fill me-2"></i>Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">How to Play Connect Four</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ol>
+                        <li>Choose Single Player (AI) or Dual Player mode</li>
+                        <li>In Single Player, select AI difficulty</li>
+                        <li>Click or tap on a column to drop your colored disc</li>
+                        <li>First player to connect 4 discs wins!</li>
+                    </ol>
+                    <p class="text-muted">
+                        <small>A game by RSKWORLD - Your destination for online games</small>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a href="https://rskworld.in/games" target="_blank" class="btn btn-outline-primary me-2">
+                        <i class="bi bi-controller me-2"></i>More Games
+                    </a>
+                    <a href="mailto:help@rskworld.in" target="_blank" class="btn btn-outline-success">
+                        <i class="bi bi-envelope me-2"></i>Contact Us
+                    </a>
+                    <a href="tel:+919330539277" target="_blank" class="btn btn-outline-info">
+                        <i class="bi bi-phone me-2"></i>Call Developer
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
