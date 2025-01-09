@@ -1,7 +1,45 @@
 # Connect Four Game by RSKWORLD
 
 ## 🎮 Game Overview
-Connect Four is an engaging online multiplayer strategy game developed by RSKWORLD, featuring both single-player and dual-player modes.
+Connect Four is an engaging **strategy board game** that combines elements of:
+- Strategic thinking
+- Spatial reasoning
+- Turn-based competition
+
+### 🧩 Game Classification
+- **Type**: Strategy Board Game
+- **Genre**: 
+  - Puzzle-Strategy Hybrid
+  - Tactical Placement Game
+  - Competitive Multiplayer
+
+### 🎲 Game Mechanics
+- Players take turns dropping colored discs into a vertical grid
+- Objective: Create a continuous line of four discs
+- Requires:
+  - Forward planning
+  - Tactical blocking
+  - Predictive thinking
+- Combines simplicity of rules with depth of strategy
+
+### 🧠 Cognitive Skills Developed
+- Strategic planning
+- Pattern recognition
+- Spatial intelligence
+- Decision-making under constraints
+- Predictive reasoning
+
+### 🏆 Competitive Aspects
+- Head-to-head gameplay
+- Skill-based progression
+- Quick learning, lifetime mastery
+- Suitable for all ages (7+)
+
+### 🌐 Game Context
+- Classic board game translated to digital format
+- Originated in the 1970s
+- Worldwide popularity
+- Simple to learn, challenging to master
 
 ## 🌟 Features
 - Single Player (AI) and Dual Player modes
